@@ -454,10 +454,10 @@
     throw new Error(`Unknown area shape: ${t.shape}`);
   }
   __name(Vt, "Vt");
-  function dt(e, t) {
+  function dt2(e, t) {
     return { p1: a(e.p1.x - t.p2.x, e.p1.y - t.p2.y), p2: a(e.p2.x - t.p1.x, e.p2.y - t.p1.y) };
   }
-  __name(dt, "dt");
+  __name(dt2, "dt");
   function ht(e, t) {
     return { p1: e.clone(), p2: t.clone() };
   }
@@ -514,7 +514,7 @@
     s(kt, "testAreaPolygon");
     s(lt, "testAreaPoint");
     s(Vt, "testAreaArea");
-    s(dt, "minkDiff");
+    s(dt2, "minkDiff");
     s(ht, "makeLine");
   });
   function Mt(e, t) {
@@ -2059,7 +2059,7 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
               var Yt;
               if (!this.exists() || p === this || !p.solid || ((Yt = p.area) == null ? void 0 : Yt.shape) !== "rect")
                 return;
-              let V = p.worldArea(), P = dt(V, g);
+              let V = p.worldArea(), P = dt2(V, g);
               if (we(P, a(0))) {
                 let ge = Math.min(Math.abs(P.p1.x), Math.abs(P.p2.x), Math.abs(P.p1.y), Math.abs(P.p2.y)), Me = (() => {
                   switch (ge) {
@@ -2073,7 +2073,7 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
                       return a(0, -ge);
                   }
                 })();
-                this.pos = this.pos.sub(Me), g = this.worldArea(), P = dt(V, g);
+                this.pos = this.pos.sub(Me), g = this.worldArea(), P = dt2(V, g);
               }
               let Q = { p1: a(0), p2: a(d, U) }, ee = 1, Re = P.p1, ke = a(P.p1.x, P.p2.y), Ve = P.p2, rt = a(P.p2.x, P.p1.y), nt = 0, Ot = { right: { p1: Re, p2: ke }, top: { p1: ke, p2: Ve }, left: { p1: Ve, p2: rt }, bottom: { p1: rt, p2: Re } };
               for (let ge in Ot) {
@@ -2240,7 +2240,7 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
           var P;
           if (U === this || ((P = U.area) == null ? void 0 : P.shape) !== "rect")
             return null;
-          let l = this.worldArea(), f = U.worldArea(), g = dt(l, f);
+          let l = this.worldArea(), f = U.worldArea(), g = dt2(l, f);
           if (!we(g, a(0)))
             return null;
           let p = Math.min(Math.abs(g.p1.x), Math.abs(g.p2.x), Math.abs(g.p1.y), Math.abs(g.p2.y)), V = (() => {
@@ -2695,12 +2695,29 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   });
   var score = add([
     text("0"),
-    pos(300, 300),
+    pos(300, 250),
     layer("ui"),
-    scale(2),
+    scale(1.5),
     {
       value: 0
     }
   ]);
+  var TIME_LEFT = 5;
+  var timer = add([
+    text("0:00"),
+    pos(300, 350),
+    layer("ui"),
+    scale(1),
+    {
+      time: TIME_LEFT
+    }
+  ]);
+  timer.action(() => {
+    timer.time -= dt();
+    timer.text = timer.time.toFixed(2);
+    if (timer.time <= 0) {
+      timer.text = "GAME OVER";
+    }
+  });
 })();
 //# sourceMappingURL=game.js.map

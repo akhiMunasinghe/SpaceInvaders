@@ -61,10 +61,31 @@ keyDown('right', () => {
 //keeping the score of player
 const score = add([
   text('0'),
-  pos(300,300),
+  pos(300,250),
   layer('ui'),
-  scale(2),
+  scale(1.5),
   {
     value : 0,
   }
-])
+]);
+
+//keeping track of time
+const TIME_LEFT = 5;
+
+const timer = add([
+  text('0:00'),
+  pos(300, 350),
+  layer('ui'),
+  scale(1),
+  {
+    time : TIME_LEFT
+  }
+]);
+
+timer.action( ()=> {
+  timer.time -= dt();
+  timer.text = timer.time.toFixed(2);
+  if(timer.time <= 0) {
+    timer.text = "GAME OVER";
+  }
+})
