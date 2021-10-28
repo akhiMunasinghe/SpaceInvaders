@@ -2670,14 +2670,18 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
     height: 22,
     "^": () => [
       sprite("sapceInvador"),
-      scale(0.7)
+      scale(0.7),
+      area(),
+      "space-invader"
     ],
     "!": () => [
       sprite("wall"),
+      area(),
       "left-wall"
     ],
     "&": () => [
       sprite("wall"),
+      area(),
       "right-wall"
     ]
   });
@@ -2715,10 +2719,24 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   timer.action(() => {
     timer.time -= dt();
     timer.text = timer.time.toFixed(2);
-    if (timer.time <= 0) {
-      go("lose", score.value);
-      timer.text = "GAME OVER";
-    }
+  });
+  var INVADER_SPEED = 50;
+  var CURRENT_SPEED = INVADER_SPEED;
+  var LEVEL_DOWN = 250;
+  action("space-invader", (invader) => {
+    invader.move(CURRENT_SPEED, 0);
+  });
+  collides("space-invader", "right-wall", () => {
+    CURRENT_SPEED = -INVADER_SPEED;
+    every("space-invader", (invader) => {
+      invader.move(0, LEVEL_DOWN);
+    });
+  });
+  collides("space-invader", "left-wall", () => {
+    CURRENT_SPEED = INVADER_SPEED;
+    every("space-invader", (invader) => {
+      invader.move(0, LEVEL_DOWN);
+    });
   });
 })();
 //# sourceMappingURL=game.js.map

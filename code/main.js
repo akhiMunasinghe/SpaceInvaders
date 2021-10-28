@@ -28,14 +28,18 @@ addLevel([
   height : 22,
   '^' : () => [
     sprite("sapceInvador"),
-    scale(0.7)
+    scale(0.7),
+    area(),
+    'space-invader'
   ],
   '!' : () => [
     sprite("wall"),
+    area(),
     'left-wall'
   ],
   '&' : () => [
     sprite("wall"),
+    area(),
     'right-wall'
   ],
 });
@@ -85,8 +89,31 @@ const timer = add([
 timer.action( ()=> {
   timer.time -= dt();
   timer.text = timer.time.toFixed(2);
-  if(timer.time <= 0) {
-    go('lose', score.value); //go to the scene 'lose' and pass the score value
-    timer.text = "GAME OVER";
-  }
+  // if(timer.time <= 0) {
+  //   go('lose', score.value); //go to the scene 'lose' and pass the score value
+  //   timer.text = "GAME OVER";
+  // }
+})
+
+//adding actions to space invaders
+const INVADER_SPEED = 50;
+let CURRENT_SPEED = INVADER_SPEED;
+const LEVEL_DOWN = 250;
+
+action('space-invader', (invader) => {
+  invader.move(CURRENT_SPEED, 0)
+});
+
+collides('space-invader', 'right-wall', () => {
+  CURRENT_SPEED = -INVADER_SPEED;
+  every('space-invader', (invader) => {
+    invader.move(0, LEVEL_DOWN);
+  })
+})
+
+collides('space-invader', 'left-wall', () => {
+  CURRENT_SPEED = INVADER_SPEED;
+  every('space-invader', (invader) => {
+    invader.move(0, LEVEL_DOWN);
+  })
 })
