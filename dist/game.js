@@ -2716,6 +2716,7 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
     timer.time -= dt();
     timer.text = timer.time.toFixed(2);
     if (timer.time <= 0) {
+      go("lose", score.value);
       timer.text = "GAME OVER";
     }
   });

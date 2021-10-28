@@ -86,6 +86,7 @@ timer.action( ()=> {
   timer.time -= dt();
   timer.text = timer.time.toFixed(2);
   if(timer.time <= 0) {
+    go('lose', score.value); //go to the scene 'lose' and pass the score value
     timer.text = "GAME OVER";
   }
 })
