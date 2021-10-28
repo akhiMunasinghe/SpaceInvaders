@@ -2685,5 +2685,12 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
     pos(width() / 2, height() / 2),
     origin("center")
   ]);
+  var MOVE_SPEED = 200;
+  keyDown("left", () => {
+    player.move(-MOVE_SPEED, 0);
+  });
+  keyDown("right", () => {
+    player.move(MOVE_SPEED, 0);
+  });
 })();
 //# sourceMappingURL=game.js.map

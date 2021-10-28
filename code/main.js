@@ -8,6 +8,9 @@ loadSprite("sapceInvador", "sprites/spaceInvador.png");
 loadSprite("wall", "sprites/wall.png");
 loadSprite("spaceShip", "sprites/spaceShip.png")
 
+//defining layers (obj-> for players , ui-> to store score. Obj is the default layer)
+layer(['obj', 'ui'], 'obj')
+
 //add levels to the game
 addLevel([
   '!^^^^^^^^^^^^   &',
@@ -43,3 +46,14 @@ const player = add([
   pos(width()/2, height()/2),
   origin('center')
 ]);
+
+//player movement
+const MOVE_SPEED = 200;
+
+keyDown('left', () => {
+  player.move(-MOVE_SPEED, 0)
+});
+
+keyDown('right', () => {
+  player.move(MOVE_SPEED, 0)
+});
