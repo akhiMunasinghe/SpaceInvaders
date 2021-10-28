@@ -57,3 +57,14 @@ keyDown('left', () => {
 keyDown('right', () => {
   player.move(MOVE_SPEED, 0)
 });
+
+//keeping the score of player
+const score = add([
+  text('0'),
+  pos(300,300),
+  layer('ui'),
+  scale(2),
+  {
+    value : 0,
+  }
+])

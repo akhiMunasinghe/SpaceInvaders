@@ -2653,6 +2653,7 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   loadSprite("sapceInvador", "sprites/spaceInvador.png");
   loadSprite("wall", "sprites/wall.png");
   loadSprite("spaceShip", "sprites/spaceShip.png");
+  layer(["obj", "ui"], "obj");
   addLevel([
     "!^^^^^^^^^^^^   &",
     "!^^^^^^^^^^^^   &",
@@ -2692,5 +2693,14 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   keyDown("right", () => {
     player.move(MOVE_SPEED, 0);
   });
+  var score = add([
+    text("0"),
+    pos(300, 300),
+    layer("ui"),
+    scale(2),
+    {
+      value: 0
+    }
+  ]);
 })();
 //# sourceMappingURL=game.js.map
