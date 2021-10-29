@@ -71,6 +71,7 @@ function spawnBullet(bulletPosition) {
     pos(bulletPosition),
     origin('center'),
     color(0.5, 0.5, 1),
+    area(),
     'bullet'
   ])
 };
@@ -86,6 +87,15 @@ action('bullet', (bullet) => {
   if(bullet.pos.y < 0) {
     destroy(bullet);
   }
+});
+
+//action when a bullet collide a space invader
+collides('bullet', 'space-invader', (bullet, invader) => {
+  shake(4);
+  destroy(bullet);
+  destroy(invader);
+  score.value++;
+  score.text = score.value;
 });
 
 //keeping the score of player

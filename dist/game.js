@@ -2705,6 +2705,7 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
       pos(bulletPosition),
       origin("center"),
       color(0.5, 0.5, 1),
+      area(),
       "bullet"
     ]);
   }
@@ -2718,6 +2719,13 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
     if (bullet.pos.y < 0) {
       destroy(bullet);
     }
+  });
+  collides("bullet", "space-invader", (bullet, invader) => {
+    shake(4);
+    destroy(bullet);
+    destroy(invader);
+    score.value++;
+    score.text = score.value;
   });
   var score = add([
     text("0"),
