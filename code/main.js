@@ -64,6 +64,30 @@ keyDown('right', () => {
   player.move(MOVE_SPEED, 0)
 });
 
+//spawning bullets
+function spawnBullet(bulletPosition) {
+  add([
+    rect(6,18),
+    pos(bulletPosition),
+    origin('center'),
+    color(0.5, 0.5, 1),
+    'bullet'
+  ])
+};
+
+keyPress('space', () => {
+  spawnBullet(player.pos.add(0,-25))
+});
+
+//adding movement to bullets
+const BULLET_SPEED = 400;
+action('bullet', (bullet) => {
+  bullet.move(0, -BULLET_SPEED);
+  if(bullet.pos.y < 0) {
+    destroy(bullet);
+  }
+});
+
 //keeping the score of player
 const score = add([
   text('0'),

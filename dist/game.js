@@ -2699,6 +2699,26 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   keyDown("right", () => {
     player.move(MOVE_SPEED, 0);
   });
+  function spawnBullet(bulletPosition) {
+    add([
+      rect(6, 18),
+      pos(bulletPosition),
+      origin("center"),
+      color(0.5, 0.5, 1),
+      "bullet"
+    ]);
+  }
+  __name(spawnBullet, "spawnBullet");
+  keyPress("space", () => {
+    spawnBullet(player.pos.add(0, -25));
+  });
+  var BULLET_SPEED = 400;
+  action("bullet", (bullet) => {
+    bullet.move(0, -BULLET_SPEED);
+    if (bullet.pos.y < 0) {
+      destroy(bullet);
+    }
+  });
   var score = add([
     text("0"),
     pos(300, 250),
@@ -2743,6 +2763,9 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
     every("space-invader", (invader) => {
       invader.move(0, LEVEL_DOWN);
     });
+  });
+  collides("space-invader", "space-ship", () => {
+    go("lose", score.value);
   });
   action("space-invader", (s2) => {
     if (s2.pos.y >= height() / 2) {
