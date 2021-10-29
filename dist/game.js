@@ -2744,8 +2744,10 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
       invader.move(0, LEVEL_DOWN);
     });
   });
-  collides("space-invader", "space-ship", () => {
-    go("lose", score.value);
+  action("space-invader", (s2) => {
+    if (s2.pos.y >= height() / 2) {
+      go("lose", score.value);
+    }
   });
   scene("lose", (score2) => {
     add([

@@ -126,6 +126,13 @@ collides('space-invader', 'space-ship', () => {
   go('lose', score.value);
 });
 
+//end the game when space invaders are below  a certain point
+action('space-invader', (s) => {
+  if(s.pos.y >= height()/2){
+    go('lose', score.value);
+  }
+})
+
 
 
 /*************LOSE SCENE****************/
