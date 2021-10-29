@@ -48,7 +48,9 @@ addLevel([
 const player = add([
   sprite('spaceShip'),
   pos(width()/2, height()/2),
-  origin('center')
+  origin('center'),
+  area(),
+  'space-ship'
 ]);
 
 //player movement
@@ -74,7 +76,7 @@ const score = add([
 ]);
 
 //keeping track of time
-const TIME_LEFT = 5;
+const TIME_LEFT = 20;
 
 const timer = add([
   text('0:00'),
@@ -89,14 +91,14 @@ const timer = add([
 timer.action( ()=> {
   timer.time -= dt();
   timer.text = timer.time.toFixed(2);
-  // if(timer.time <= 0) {
-  //   go('lose', score.value); //go to the scene 'lose' and pass the score value
-  //   timer.text = "GAME OVER";
-  // }
+  if(timer.time <= 0) {
+    go('lose', score.value); //go to the scene 'lose' and pass the score value
+    timer.text = "GAME OVER";
+  }
 })
 
 //adding actions to space invaders
-const INVADER_SPEED = 50;
+const INVADER_SPEED = 150;
 let CURRENT_SPEED = INVADER_SPEED;
 const LEVEL_DOWN = 250;
 
@@ -109,11 +111,29 @@ collides('space-invader', 'right-wall', () => {
   every('space-invader', (invader) => {
     invader.move(0, LEVEL_DOWN);
   })
-})
+});
 
 collides('space-invader', 'left-wall', () => {
   CURRENT_SPEED = INVADER_SPEED;
   every('space-invader', (invader) => {
     invader.move(0, LEVEL_DOWN);
   })
-})
+});
+
+
+//action when player collides with space invader
+collides('space-invader', 'space-ship', () => {
+  go('lose', score.value);
+});
+
+
+
+/*************LOSE SCENE****************/
+scene("lose", (score) => {
+  add([
+  text("Final score: " + score),
+  origin('center'),
+  scale(0.6),
+  pos(width()/2, height()/2)
+])
+});

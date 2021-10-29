@@ -2688,7 +2688,9 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   var player = add([
     sprite("spaceShip"),
     pos(width() / 2, height() / 2),
-    origin("center")
+    origin("center"),
+    area(),
+    "space-ship"
   ]);
   var MOVE_SPEED = 200;
   keyDown("left", () => {
@@ -2706,7 +2708,7 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
       value: 0
     }
   ]);
-  var TIME_LEFT = 5;
+  var TIME_LEFT = 20;
   var timer = add([
     text("0:00"),
     pos(300, 350),
@@ -2719,8 +2721,12 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   timer.action(() => {
     timer.time -= dt();
     timer.text = timer.time.toFixed(2);
+    if (timer.time <= 0) {
+      go("lose", score.value);
+      timer.text = "GAME OVER";
+    }
   });
-  var INVADER_SPEED = 50;
+  var INVADER_SPEED = 150;
   var CURRENT_SPEED = INVADER_SPEED;
   var LEVEL_DOWN = 250;
   action("space-invader", (invader) => {
@@ -2737,6 +2743,17 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
     every("space-invader", (invader) => {
       invader.move(0, LEVEL_DOWN);
     });
+  });
+  collides("space-invader", "space-ship", () => {
+    go("lose", score.value);
+  });
+  scene("lose", (score2) => {
+    add([
+      text("Final score: " + score2),
+      origin("center"),
+      scale(0.6),
+      pos(width() / 2, height() / 2)
+    ]);
   });
 })();
 //# sourceMappingURL=game.js.map
